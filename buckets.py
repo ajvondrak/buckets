@@ -53,7 +53,13 @@ def possible_moves(buckets):
 ### Breadth-first search
 
 def reconstruct_path(parent, source, target):
-    return parent
+    path = []
+    state = target
+    while state != source:
+        path.append(state)
+        state = parent[state]
+    path.append(source)
+    return list(reversed(path))
 
 def search(source, target):
     from collections import deque
