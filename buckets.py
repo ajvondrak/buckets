@@ -41,3 +41,20 @@ def empty_three_qt((three_qt, five_qt)):
 
 def empty_five_qt((three_qt, five_qt)):
     return (three_qt, 0)
+
+### Breadth-first search
+
+def search(source, target):
+    from collections import deque
+    parent = {}
+    visited = set([source])
+    worklist = deque([source])
+    while worklist:
+        state = worklist.popleft()
+        if state == target:
+            return reconstruct_path(parent, source, target)
+        for next_state in successors(state):
+            if next_state not in visited:
+                visited.add(next_state)
+                worklist.append(next_state)
+                parent[next_state] = state
