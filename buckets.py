@@ -42,18 +42,18 @@ def empty_three_qt((three_qt, five_qt)):
 def empty_five_qt((three_qt, five_qt)):
     return (three_qt, 0)
 
-def possible_moves(buckets):
-    yield pour_three_qt_into_five_qt(buckets), \
+def possible_moves(pots):
+    yield pour_three_qt_into_five_qt(pots), \
             "Pour all you can from the 3-quart pot to the 5-quart pot."
-    yield pour_five_qt_into_three_qt(buckets), \
+    yield pour_five_qt_into_three_qt(pots), \
             "Pour all you can from the 5-quart pot to the 3-quart pot."
-    yield fill_three_qt(buckets), \
+    yield fill_three_qt(pots), \
             "Fill the 3-quart pot."
-    yield fill_five_qt(buckets), \
+    yield fill_five_qt(pots), \
             "Fill the 5-quart pot."
-    yield empty_three_qt(buckets), \
+    yield empty_three_qt(pots), \
             "Empty the 3-quart pot into the stream."
-    yield empty_five_qt(buckets), \
+    yield empty_five_qt(pots), \
             "Empty the 5-quart pot into the stream."
 
 ### Breadth-first search ###
@@ -95,7 +95,7 @@ def search(source, target):
                 worklist.append(next_state)
                 parent[next_state] = (state, action)
 
-### Answer the puzzle. ###
+### Answer the puzzle ###
 
 if __name__ == '__main__':
     print __doc__
