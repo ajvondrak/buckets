@@ -10,11 +10,16 @@ water. How will you use the 5-quart pot and the 3-quart pot to measure exactly
 
 ### Basic Operations ###
 
-# For now, we'll represent the state of our pots by the tuple
+# We represent the state of our pots by the tuple
 #     (three_qt, five_qt)
 # where three_qt is the number of quarts of water contained in the 3-quart pot
 # and five_qt is the number of quarts of water contained in the 5-quart pot.
 # This isn't really general, but it *is* simple.
+
+def amounts((three_qt, five_qt)):
+    """Human-friendly representations of the states of our pots."""
+    return ("%d quarts of water in the 3-quart pot" % three_qt,
+            "%d quarts of water in the 5-quart pot" % five_qt)
 
 def pour(source_contents, source_capacity, target_contents, target_capacity):
     """Transfer as much water from source to target as possible."""
@@ -57,10 +62,6 @@ def possible_moves(pots):
             "Empty the 5-quart pot into the stream."
 
 ### Breadth-first search ###
-
-def amounts((three_qt, five_qt)):
-    return ("%d quarts of water in the 3-quart pot" % three_qt,
-            "%d quarts of water in the 5-quart pot" % five_qt)
 
 def reconstruct_path(parent, source, target):
     from textwrap import fill
