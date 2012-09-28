@@ -63,6 +63,7 @@ def amounts((three_qt, five_qt)):
             "%d quarts of water in the 5-quart pot" % five_qt)
 
 def reconstruct_path(parent, source, target):
+    from textwrap import fill
     states = []
     actions = []
     state = target
@@ -73,8 +74,9 @@ def reconstruct_path(parent, source, target):
     states.reverse()
     actions.reverse()
     for step, (action, state) in enumerate(zip(actions, states)):
-        print "%d. %s" % (step + 1, action)
-        print "   This leaves %s and %s." % amounts(state)
+        print fill("%1d. %s" % (step + 1, action), 80)
+        print fill("This leaves %s and %s." % amounts(state), 80,
+                    initial_indent=" " * 3, subsequent_indent=" " * 3)
         print
 
 def search(source, target):
