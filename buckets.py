@@ -43,23 +43,39 @@ def empty_five_qt((three_qt, five_qt)):
     return (three_qt, 0)
 
 def possible_moves(buckets):
-    yield pour_three_qt_into_five_qt(buckets)
-    yield pour_five_qt_into_three_qt(buckets)
-    yield fill_three_qt(buckets)
-    yield fill_five_qt(buckets)
-    yield empty_three_qt(buckets)
-    yield empty_five_qt(buckets)
+    yield pour_three_qt_into_five_qt(buckets), \
+            "Pour all you can from the 3-quart pot to the 5-quart pot."
+    yield pour_five_qt_into_three_qt(buckets), \
+            "Pour all you can from the 5-quart pot to the 3-quart pot."
+    yield fill_three_qt(buckets), \
+            "Fill the 3-quart pot."
+    yield fill_five_qt(buckets), \
+            "Fill the 5-quart pot."
+    yield empty_three_qt(buckets), \
+            "Empty the 3-quart pot into the stream."
+    yield empty_five_qt(buckets), \
+            "Empty the 5-quart pot into the stream."
 
-### Breadth-first search
+### Breadth-first search ###
+
+def amounts((three_qt, five_qt)):
+    return ("%d quarts of water in the 3-quart pot" % three_qt,
+            "%d quarts of water in the 5-quart pot" % five_qt)
 
 def reconstruct_path(parent, source, target):
-    path = []
+    states = []
+    actions = []
     state = target
     while state != source:
-        path.append(state)
-        state = parent[state]
-    path.append(source)
-    return list(reversed(path))
+        states.append(state)
+        state, action = parent[state]
+        actions.append(action)
+    states.reverse()
+    actions.reverse()
+    for step, (action, state) in enumerate(zip(actions, states)):
+        print "%d. %s" % (step + 1, action)
+        print "   This leaves %s and %s." % amounts(state)
+        print
 
 def search(source, target):
     from collections import deque
@@ -69,12 +85,19 @@ def search(source, target):
     while worklist:
         state = worklist.popleft()
         if state == target:
-            return reconstruct_path(parent, source, target)
-        for next_state in possible_moves(state):
+            reconstruct_path(parent, source, target)
+            return
+        for next_state, action in possible_moves(state):
             if next_state not in visited:
                 visited.add(next_state)
                 worklist.append(next_state)
-                parent[next_state] = state
+                parent[next_state] = (state, action)
+
+### Answer the puzzle. ###
 
 if __name__ == '__main__':
-    print search((0, 0), (0, 4))
+    print __doc__
+    print "ANSWER:\n"
+    search((0, 0), (0, 4))
+    # BFS guarantees shortest path (if one exists)
+    print "This answer is guaranteed to use the least number of steps."
