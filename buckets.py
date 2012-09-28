@@ -42,7 +42,18 @@ def empty_three_qt((three_qt, five_qt)):
 def empty_five_qt((three_qt, five_qt)):
     return (three_qt, 0)
 
+def possible_moves(buckets):
+    yield pour_three_qt_into_five_qt(buckets)
+    yield pour_five_qt_into_three_qt(buckets)
+    yield fill_three_qt(buckets)
+    yield fill_five_qt(buckets)
+    yield empty_three_qt(buckets)
+    yield empty_five_qt(buckets)
+
 ### Breadth-first search
+
+def reconstruct_path(parent, source, target):
+    return parent
 
 def search(source, target):
     from collections import deque
@@ -53,8 +64,11 @@ def search(source, target):
         state = worklist.popleft()
         if state == target:
             return reconstruct_path(parent, source, target)
-        for next_state in successors(state):
+        for next_state in possible_moves(state):
             if next_state not in visited:
                 visited.add(next_state)
                 worklist.append(next_state)
                 parent[next_state] = state
+
+if __name__ == '__main__':
+    print search((0, 0), (0, 4))
